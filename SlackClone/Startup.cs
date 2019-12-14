@@ -2,6 +2,7 @@ using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,10 +62,22 @@ namespace SlackClone
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSpaStaticFiles();
+
             // Adds GraphQL Service
             app.UseGraphQL();
             // Adds Playground IDE
             app.UsePlayground();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }
