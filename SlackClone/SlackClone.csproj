@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="HotChocolate" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.AspNetCore.Subscriptions" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.Types" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="11.0.0-preview.65" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="11.0.0-preview.65" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="GraphQL\" />
+    <Folder Include="GraphQL\Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\SlackCloneDbSettings.cs" />
+    <Compile Remove="Repositories\ChannelMessageRepository.cs" />
+    <Compile Remove="Models\SlackCloneDatabaseSettings.cs" />
+    <Compile Remove="Models\DirectMessage.cs" />
+    <Compile Remove="Models\Team.cs" />
+    <Compile Remove="Models\UserStatus.cs" />
+  </ItemGroup>
+</Project>
