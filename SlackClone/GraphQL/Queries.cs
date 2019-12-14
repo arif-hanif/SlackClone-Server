@@ -8,14 +8,21 @@ namespace SlackClone.GraphQL
     {
         private readonly SlackCloneDbContext _slackCloneDbContext;
 
-        public Queries(SlackCloneDbContext dbContext)
-        {
-            _slackCloneDbContext = dbContext;
-        }
+        public Queries(SlackCloneDbContext dbContext) => _slackCloneDbContext = dbContext;
 
         public IQueryable<User> GetUsers()
         {
             return _slackCloneDbContext.Users.AsQueryable();
+        }
+
+        public IQueryable<Channel> GetChannels()
+        {
+            return _slackCloneDbContext.Channels.AsQueryable();
+        }
+
+        public IQueryable<ChannelMessage> GetMessages()
+        {
+            return _slackCloneDbContext.ChannelMessages.AsQueryable();
         }
     }
 }

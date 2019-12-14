@@ -20,6 +20,7 @@
     <Folder Include="Models\" />
     <Folder Include="GraphQL\" />
     <Folder Include="GraphQL\Types\" />
+    <Folder Include="GraphQL\Types\Inputs\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\SlackCloneDbSettings.cs" />

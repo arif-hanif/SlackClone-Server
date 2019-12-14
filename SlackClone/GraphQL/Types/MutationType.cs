@@ -6,8 +6,7 @@ namespace SlackClone.GraphQL
     {
         protected override void Configure(IObjectTypeDescriptor<Mutations> descriptor)
         {
-            descriptor.Field(t => t.InsertUser(default));
-            descriptor.Field(t => t.DeleteUser(default));
+            descriptor.Field(t => t.CreateUser(default));
         }
     }
 }

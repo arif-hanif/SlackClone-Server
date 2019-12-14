@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -13,5 +14,6 @@ namespace SlackClone.Models
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public int MemberCount { get; set; }
+        public List<string> Members { get; set; }
     }
 }
