@@ -21,6 +21,8 @@
     <Folder Include="GraphQL\" />
     <Folder Include="GraphQL\Types\" />
     <Folder Include="GraphQL\Types\Inputs\" />
+    <Folder Include="GraphQL\Schema\" />
+    <Folder Include="GraphQL\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\SlackCloneDbSettings.cs" />
@@ -29,5 +31,6 @@
     <Compile Remove="Models\DirectMessage.cs" />
     <Compile Remove="Models\Team.cs" />
     <Compile Remove="Models\UserStatus.cs" />
+    <Compile Remove="GraphQL\Schema.cs" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace SlackClone.GraphQL.Types
 {
-    public class JoinChannelInput
+    public class JoinLeaveChannelInput
     {
         public string ChannelId { get; set; }
         public string MemberId { get; set; }

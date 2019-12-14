@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace SlackClone.GraphQL
 {
-    public class Queries
+    public class QueryService
     {
         private readonly SlackCloneDbContext _slackCloneDbContext;
 
-        public Queries(SlackCloneDbContext dbContext) => _slackCloneDbContext = dbContext;
+        public QueryService(SlackCloneDbContext dbContext) => _slackCloneDbContext = dbContext;
 
         public IQueryable<User> GetUsers()
         {

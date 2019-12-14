@@ -13,7 +13,7 @@ namespace SlackClone.Models
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
-        public int MemberCount { get; set; }
+        public int MemberCount { get => Members.Count; }
         public List<string> Members { get; set; }
     }
 }
