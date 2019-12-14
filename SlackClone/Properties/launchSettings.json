@@ -18,7 +18,6 @@
     "SlackClone": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "playground",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

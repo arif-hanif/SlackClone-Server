@@ -15,22 +15,10 @@
     <PackageReference Include="HotChocolate.Types" Version="11.0.0-preview.65" />
     <PackageReference Include="HotChocolate.Types.Filters" Version="11.0.0-preview.65" />
     <PackageReference Include="HotChocolate.Types.Sorting" Version="11.0.0-preview.65" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="GraphQL\" />
-    <Folder Include="GraphQL\Types\" />
-    <Folder Include="GraphQL\Types\Inputs\" />
-    <Folder Include="GraphQL\Schema\" />
-    <Folder Include="GraphQL\Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Models\SlackCloneDbSettings.cs" />
-    <Compile Remove="Repositories\ChannelMessageRepository.cs" />
-    <Compile Remove="Models\SlackCloneDatabaseSettings.cs" />
-    <Compile Remove="Models\DirectMessage.cs" />
-    <Compile Remove="Models\Team.cs" />
-    <Compile Remove="Models\UserStatus.cs" />
-    <Compile Remove="GraphQL\Schema.cs" />
+    <Folder Include="ClientApp\src\components\" />
   </ItemGroup>
 </Project>
