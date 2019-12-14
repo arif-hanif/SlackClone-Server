@@ -51,6 +51,11 @@ namespace SlackClone
                     .Create());
 
             services.AddTypeConverter<string, ObjectId>(ObjectId.Parse);
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         // This method gets called by the runtime.
