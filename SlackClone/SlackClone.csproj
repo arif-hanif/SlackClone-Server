@@ -4,21 +4,4 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="HotChocolate" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.AspNetCore.Subscriptions" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.Types" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="11.0.0-preview.65" />
-    <PackageReference Include="HotChocolate.Types.Sorting" Version="11.0.0-preview.65" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClientApp\src\components\" />
-  </ItemGroup>
 </Project>
