@@ -2,15 +2,14 @@ using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
 using SlackClone.Models;
 using SlackClone.GraphQL;
-using HotChocolate.Utilities;
-using MongoDB.Bson;
+using Microsoft.AspNetCore.Http;
+using SlackClone.GraphQL.Queries;
+using SlackClone.GraphQL.Mutations;
 
 namespace SlackClone
 {
@@ -29,33 +28,23 @@ namespace SlackClone
         // visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // setup type conversion for object id
-            TypeConversion.Default.Register<string, ObjectId>(ObjectId.Parse);
-            TypeConversion.Default.Register<ObjectId, string>(from => from.ToString());
-
-
-            services.AddSingleton<IMongoClient>(s =>
-                new MongoClient(
-                    Configuration.GetConnectionString("MongoDb")));
-
-            services.AddScoped(s =>
-                new SlackCloneDbContext(
-                    s.GetRequiredService<IMongoClient>(), Configuration["DatabaseName"]));
-
             // Adds GraphQL Schema
-            services.AddGraphQL(services =>
-                SchemaBuilder.New()
-                    .AddServices(services)
-                    .AddQueryType<QueryType>()
-                    .AddMutationType<MutationType>()
-                    .Create());
+            services
+                .AddDbContext<SlackCloneDbContext>()
+                .AddGraphQL(sb =>
+                    SchemaBuilder.New()
+                        .AddServices(sb)
+                        .AddQueryType(d => d.Name("Query"))
+                        .AddType<TeamQueries>()
+                        .AddMutationType(d => d.Name("Mutation"))
+                        .AddType<TeamMutations>()
+                        //.AddSubscriptionType(d => d.Name("Subscription"))
+                        .Create());
+        }
 
-            services.AddTypeConverter<string, ObjectId>(ObjectId.Parse);
-
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+        public class Query
+        {
+            public string hello => "world";
         }
 
         // This method gets called by the runtime.
@@ -67,21 +56,24 @@ namespace SlackClone
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSpaStaticFiles();
+            app.UseRouting();
+
+            app.UseWebSockets();
+
+            app.UseHttpsRedirection();
 
             // Adds GraphQL Service
             app.UseGraphQL();
+
             // Adds Playground IDE
             app.UsePlayground();
 
-            app.UseSpa(spa =>
+            app.UseEndpoints(endpoints =>
             {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+                endpoints.MapGet("/", async context =>
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                    await context.Response.WriteAsync("GraphQL Server Launched");
+                });
             });
         }
     }
