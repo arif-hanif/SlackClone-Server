@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SlackClone.Models;
@@ -9,9 +10,10 @@ using SlackClone.Models;
 namespace SlackClone.Migrations
 {
     [DbContext(typeof(SlackCloneDbContext))]
-    partial class SlackCloneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200411033905_UserModelUpdates")]
+    partial class UserModelUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

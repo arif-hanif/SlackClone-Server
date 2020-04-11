@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using SlackClone.Models;
 
 namespace SlackClone.GraphQL.Mutations
@@ -13,29 +14,37 @@ namespace SlackClone.GraphQL.Mutations
     public class TeamMutations
     {
         public async Task<InsertMutationResponse<Team>> CreateTeam(
-            CreateTeamInput input,
+            InsertTeamInput input,
             [Service]SlackCloneDbContext dbContext,
             CancellationToken cancellationToken)
         {
             var ok = false;
             var errors = new List<string>();
 
-            if (string.IsNullOrEmpty(input.Name))
+            try
             {
-                errors.Add("teamName can not be empty");
-                return new InsertMutationResponse<Team>(errors, ok, null);
+                if (string.IsNullOrEmpty(input.Name))
+                {
+                    errors.Add("teamName can not be empty");
+                }
+
+                var team = new Team()
+                {
+                    Name = input.Name,
+                    Description = input.Description
+                };
+
+                dbContext.Teams.Add(team);
+                await dbContext.SaveChangesAsync(cancellationToken);
+                ok = true;
+
+                return new InsertMutationResponse<Team>(errors, ok, team);
             }
-
-            var team = new Team()
+            catch (DbUpdateException e)
             {
-                Name = input.Name,
-                Description = input.Description
-            };
-
-            dbContext.Teams.Add(team);
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return new InsertMutationResponse<Team>();
+                errors.Add($"DbUpdateException error details - {e?.InnerException?.Message}");
+            }
+            return new InsertMutationResponse<Team>(errors, ok, null);
         }
     }
 }
