@@ -1,5 +1,6 @@
 using System.Linq;
 using HotChocolate;
+using HotChocolate.Execution;
 using HotChocolate.Types;
 using SlackClone.Models;
 
@@ -13,9 +14,22 @@ namespace SlackClone.GraphQL.Queries
         /// </summary>
         // [Authorize]
         [UseFirstOrDefault]
-        [UseSelection]
         public IQueryable<User> GetMe(
-                [GlobalState] string currentUserEmail, [Service] SlackCloneDbContext dbContext) =>
-            dbContext.Users.Where(t => t.Email == currentUserEmail);
+                [Service] SlackCloneDbContext dbContext)
+        {
+            try
+            {
+                return dbContext.Users.Where(user => user.Email == "test");
+            }
+            catch
+            {
+                throw new QueryException(
+                                    ErrorBuilder.New()
+                                        .SetMessage("The specified password is invalid.")
+                                        .SetCode("INVALID_PASSWORD")
+                                        .Build());
+            }
+        }
+
     }
 }

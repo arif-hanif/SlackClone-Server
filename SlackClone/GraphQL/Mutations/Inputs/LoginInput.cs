@@ -1,3 +1,5 @@
+using HotChocolate;
+
 namespace SlackClone.GraphQL.Mutations
 {
     public class LoginInput
@@ -9,7 +11,9 @@ namespace SlackClone.GraphQL.Mutations
             Email = email;
             Password = password;
         }
+        [GraphQLNonNullType]
         public string Email { get; }
+        [GraphQLNonNullType]
         public string Password { get; }
     }
 }
