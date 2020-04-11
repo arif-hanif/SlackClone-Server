@@ -3,7 +3,7 @@ using HotChocolate;
 
 namespace SlackClone.GraphQL.Mutations
 {
-    public class CreateTeamInput
+    public class InsertTeamInput
     {
         [GraphQLNonNullType]
         public string Name { get; set; }

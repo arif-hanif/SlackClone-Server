@@ -8,6 +8,10 @@ namespace SlackClone.Models
     {
         [Key]
         public string TeamName { get; set; }
-        public string Member { get; set; }
+        public Team Team { get; set; }
+        [Key]
+        public string MemberEmail { get; set; }
+        public User Member { get; set; }
+
     }
 }
