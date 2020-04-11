@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
-namespace SlackClone.Models
-{
-    public class SlackCloneDbContext : DbContext
-    {
+namespace SlackClone.Models {
+    public class SlackCloneDbContext : DbContext {
+
+        public SlackCloneDbContext (DbContextOptions<SlackCloneDbContext> options) : base (options) { }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
@@ -11,14 +14,7 @@ namespace SlackClone.Models
         public DbSet<ChannelMessage> ChannelMessages { get; set; }
         public DbSet<DirectMessage> DirectMessages { get; set; }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlite("Data Source=./DbContext/SlackClone.db");
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating (ModelBuilder modelBuilder) {
 
         }
     }
