@@ -2,9 +2,9 @@ using HotChocolate;
 
 namespace SlackClone.GraphQL.Mutations
 {
-    public class InsertUserInput
+    public class SignupInput
     {
-        public InsertUserInput(
+        public SignupInput(
             string firstName,
             string lastName,
             string displayName,

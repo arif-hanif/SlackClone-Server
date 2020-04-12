@@ -6,18 +6,12 @@ namespace SlackClone.GraphQL.Mutations
     {
         public LoginResponse(
             User me,
-            string token,
-            string scheme)
+            string token)
         {
             Me = me;
             Token = token;
-            Scheme = scheme;
         }
-
         public User Me { get; }
-
         public string Token { get; }
-
-        public string Scheme { get; }
     }
 }

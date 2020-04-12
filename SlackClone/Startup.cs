@@ -23,6 +23,8 @@ namespace SlackClone
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public static byte[] SharedSecret = Encoding.ASCII.GetBytes(
+            "abcdefghijklmnopqrstuvwxyz1234567890");
 
         public Startup(IConfiguration configuration)
         {
@@ -51,7 +53,7 @@ namespace SlackClone
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("abcdefghijklmnopqrstuvwxyz1234567890")),
+                        IssuerSigningKey = new SymmetricSecurityKey(SharedSecret),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
@@ -93,6 +95,7 @@ namespace SlackClone
                    SchemaBuilder.New()
                    .AddServices(sp)
                    .AddQueryType(d => d.Name("Query"))
+                   .AddType<UserQueries>()
                    .AddType<TeamQueries>()
                    .AddMutationType(d => d.Name("Mutation"))
                    .AddType<TeamMutations>()
