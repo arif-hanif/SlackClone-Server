@@ -107,7 +107,6 @@ namespace SlackClone
             {
                 if (context.User.Identity.IsAuthenticated)
                 {
-
                     builder.AddProperty(
                         "currentUserEmail",
                         context.User.FindFirst(ClaimTypes.Email).Value);
