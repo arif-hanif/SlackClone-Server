@@ -12,7 +12,7 @@ namespace SlackClone.GraphQL.Queries
         /// <summary>
         /// Gets the currently logged in user.
         /// </summary>
-        [Authorize]
+        //[Authorize]
         [UseSelection, UseFirstOrDefault]
         public IQueryable<User> Me(
                 [GlobalState]string currentUserEmail,

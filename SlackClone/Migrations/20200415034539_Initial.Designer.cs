@@ -10,8 +10,8 @@ using SlackClone.Models;
 namespace SlackClone.Migrations
 {
     [DbContext(typeof(SlackCloneDbContext))]
-    [Migration("20200411033905_UserModelUpdates")]
-    partial class UserModelUpdates
+    [Migration("20200415034539_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,7 @@ namespace SlackClone.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CreatedByEmail")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -39,14 +39,24 @@ namespace SlackClone.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("TeamName")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamName");
-
                     b.ToTable("Channels");
+                });
+
+            modelBuilder.Entity("SlackClone.Models.ChannelMember", b =>
+                {
+                    b.Property<Guid>("ChannelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MemberEmail")
+                        .HasColumnType("text");
+
+                    b.HasKey("ChannelId", "MemberEmail");
+
+                    b.HasIndex("MemberEmail");
+
+                    b.ToTable("ChannelMembers");
                 });
 
             modelBuilder.Entity("SlackClone.Models.ChannelMessage", b =>
@@ -58,10 +68,10 @@ namespace SlackClone.Migrations
                     b.Property<Guid>("ChannelId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUTC")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CreatedByEmail")
                         .HasColumnType("text");
 
                     b.Property<int>("Likes")
@@ -92,7 +102,7 @@ namespace SlackClone.Migrations
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Sent")
+                    b.Property<DateTime>("SentAtUTC")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Text")
@@ -101,39 +111,6 @@ namespace SlackClone.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DirectMessages");
-                });
-
-            modelBuilder.Entity("SlackClone.Models.Team", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Teams");
-                });
-
-            modelBuilder.Entity("SlackClone.Models.TeamMember", b =>
-                {
-                    b.Property<string>("TeamName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MemberEmail")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("ChannelId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("TeamName", "MemberEmail");
-
-                    b.HasIndex("ChannelId");
-
-                    b.HasIndex("MemberEmail");
-
-                    b.ToTable("TeamMembers");
                 });
 
             modelBuilder.Entity("SlackClone.Models.User", b =>
@@ -167,11 +144,19 @@ namespace SlackClone.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SlackClone.Models.Channel", b =>
+            modelBuilder.Entity("SlackClone.Models.ChannelMember", b =>
                 {
-                    b.HasOne("SlackClone.Models.Team", null)
+                    b.HasOne("SlackClone.Models.Channel", "Channel")
+                        .WithMany("Members")
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SlackClone.Models.User", "Member")
                         .WithMany("Channels")
-                        .HasForeignKey("TeamName");
+                        .HasForeignKey("MemberEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SlackClone.Models.ChannelMessage", b =>
@@ -179,25 +164,6 @@ namespace SlackClone.Migrations
                     b.HasOne("SlackClone.Models.Channel", null)
                         .WithMany("Messages")
                         .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SlackClone.Models.TeamMember", b =>
-                {
-                    b.HasOne("SlackClone.Models.Channel", null)
-                        .WithMany("Members")
-                        .HasForeignKey("ChannelId");
-
-                    b.HasOne("SlackClone.Models.Team", "Team")
-                        .WithMany("Members")
-                        .HasForeignKey("MemberEmail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SlackClone.Models.User", "Member")
-                        .WithMany("Teams")
-                        .HasForeignKey("TeamName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
