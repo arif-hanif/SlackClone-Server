@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using HotChocolate;
 
 namespace SlackClone.Models
 {
@@ -9,9 +11,12 @@ namespace SlackClone.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string CreatedBy { get; set; }
         public int MemberCount { get => Members.Count; }
-        public List<TeamMember> Members { get; set; }
+        public List<ChannelMember> Members { get; set; }
         public List<ChannelMessage> Messages { get; set; }
+
+        [ForeignKey("User"), GraphQLIgnore]
+        public string CreatedByEmail { get; set; }
+        public virtual User CreatedBy { get; }
     }
 }

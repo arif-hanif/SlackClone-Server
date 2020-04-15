@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SlackClone.Models
 {
-    public class TeamMember
+    public class ChannelMember
     {
         [Key]
-        public string TeamName { get; set; }
-        public Team Team { get; set; }
+        public Guid ChannelId { get; set; }
+        public Channel Channel { get; set; }
+
         [Key]
         public string MemberEmail { get; set; }
         public User Member { get; set; }
-
     }
 }

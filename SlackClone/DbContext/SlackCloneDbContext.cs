@@ -10,28 +10,23 @@ namespace SlackClone.Models
         public SlackCloneDbContext(DbContextOptions<SlackCloneDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<ChannelMessage> ChannelMessages { get; set; }
         public DbSet<DirectMessage> DirectMessages { get; set; }
+        public DbSet<ChannelMember> ChannelMembers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TeamMember>()
-                .HasKey(o => new { o.TeamName, o.MemberEmail });
-
-            modelBuilder.Entity<TeamMember>()
-                .HasOne(se => se.Team)
+            modelBuilder.Entity<ChannelMember>()
+                .HasKey(o => new { o.ChannelId, o.MemberEmail });
+            modelBuilder.Entity<ChannelMember>()
+                .HasOne(se => se.Channel)
                 .WithMany(s => s.Members)
-                .HasForeignKey(se => se.MemberEmail);
-
-            modelBuilder.Entity<TeamMember>()
+                .HasForeignKey(se => se.ChannelId);
+            modelBuilder.Entity<ChannelMember>()
                 .HasOne(se => se.Member)
-                .WithMany(e => e.Teams)
-                .HasForeignKey(se => se.TeamName);
-
-
+                .WithMany(s => s.Channels)
+                .HasForeignKey(se => se.MemberEmail);
         }
     }
 }

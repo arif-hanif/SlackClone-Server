@@ -96,9 +96,7 @@ namespace SlackClone
                    .AddServices(sp)
                    .AddQueryType(d => d.Name("Query"))
                    .AddType<UserQueries>()
-                   .AddType<TeamQueries>()
                    .AddMutationType(d => d.Name("Mutation"))
-                   .AddType<TeamMutations>()
                    .AddType<UserMutations>()
                    //.AddSubscriptionType(d => d.Name("Subscription"))
                    .Create());

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using HotChocolate;
 
 namespace SlackClone.Models
@@ -7,21 +8,17 @@ namespace SlackClone.Models
     {
         public Guid Id { get; set; }
 
-        [GraphQLIgnore]
+        [ForeignKey("User"), GraphQLIgnore]
         public Guid SenderId { get; set; }
+        public virtual User Sender { get; }
 
-        [GraphQLIgnore]
+        [ForeignKey("User"), GraphQLIgnore]
         public Guid RecipientId { get; set; }
+        public virtual User Recipient { get; }
 
         [GraphQLNonNullType]
         public string Text { get; set; }
 
-        public DateTime Sent { get; set; }
-
-
-        public DirectMessage()
-        {
-            
-        }
+        public DateTime SentAtUTC { get; set; }
     }
 }
