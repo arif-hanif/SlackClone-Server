@@ -23,7 +23,7 @@ namespace SlackClone.Models
         public string Salt { get; set; }
         public bool Online { get; set; }
         public DateTime LastSeen { get; set; }
-        public List<TeamMember> Teams { get; } = new List<TeamMember>();
 
+        public List<ChannelMember> Channels { get; set; }
     }
 }

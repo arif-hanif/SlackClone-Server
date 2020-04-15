@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -8,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,14 +17,11 @@ namespace SlackClone.GraphQL.Mutations
     [ExtendObjectType(Name = "Mutation")]
     public class UserMutations
     {
-        public async Task<InsertMutationResponse<User>> SignUp(
+        public async Task<CreateMutationResponse<User>> SignUp(
             SignupInput input,
             [Service]SlackCloneDbContext dbContext,
             CancellationToken cancellationToken)
         {
-            var ok = false;
-            var errors = new List<string>();
-
             try
             {
                 string salt = Guid.NewGuid().ToString("N");
@@ -47,14 +42,12 @@ namespace SlackClone.GraphQL.Mutations
                 dbContext.Users.Add(user);
 
                 await dbContext.SaveChangesAsync(cancellationToken);
-                ok = true;
-                return new InsertMutationResponse<User>(errors, ok, user);
+                return new CreateMutationResponse<User>(true, user);
             }
             catch (DbUpdateException e)
             {
-                errors.Add($"DbUpdateException error details - {e?.InnerException?.Message}");
+                throw new QueryException($"DbUpdateException error details - {e?.InnerException?.Message}");
             }
-            return new InsertMutationResponse<User>(errors, ok, null);
         }
 
         public async Task<LoginResponse> Login(
@@ -88,7 +81,7 @@ namespace SlackClone.GraphQL.Mutations
 
             var identity = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Name, user.DisplayName),
                 new Claim(ClaimTypes.Email, user.Email)
             });
 
@@ -107,7 +100,6 @@ namespace SlackClone.GraphQL.Mutations
             string tokenString = tokenHandler.WriteToken(token);
 
             return new LoginResponse(user, tokenString);
-
         }
     }
 }

@@ -5,14 +5,10 @@ namespace SlackClone.GraphQL.Mutations
     public class MutationResponse : IMutationResponse
     {
         public bool Ok { get; }
-        public List<string> Errors { get; } = new List<string>();
 
-        public MutationResponse(
-            bool ok = false,
-            List<string> errors = null)
+        public MutationResponse(bool ok)
         {
             Ok = ok;
-            Errors.AddRange(errors);
         }
     }
 }

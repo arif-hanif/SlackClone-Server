@@ -1,8 +1,8 @@
 using System.Linq;
 using HotChocolate;
-using HotChocolate.Execution;
 using HotChocolate.Types;
 using SlackClone.Models;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace SlackClone.GraphQL.Queries
 {
@@ -12,24 +12,20 @@ namespace SlackClone.GraphQL.Queries
         /// <summary>
         /// Gets the currently logged in user.
         /// </summary>
-        // [Authorize]
-        [UseFirstOrDefault]
-        public IQueryable<User> GetMe(
-                [Service] SlackCloneDbContext dbContext)
-        {
-            try
-            {
-                return dbContext.Users.Where(user => user.Email == "test");
-            }
-            catch
-            {
-                throw new QueryException(
-                                    ErrorBuilder.New()
-                                        .SetMessage("The specified password is invalid.")
-                                        .SetCode("INVALID_PASSWORD")
-                                        .Build());
-            }
-        }
+        //[Authorize]
+        [UseSelection, UseFirstOrDefault]
+        public IQueryable<User> Me(
+                [GlobalState]string currentUserEmail,
+                [Service] SlackCloneDbContext dbContext) =>
+            dbContext.Users.Where(user => user.Email == currentUserEmail);
 
+        /// <summary>
+        /// Gets a user.
+        /// </summary>
+        // [Authorize]
+        [UseSelection, UseFiltering, UseSorting]
+        public IQueryable<User> Users(
+                [Service] SlackCloneDbContext dbContext) =>
+            dbContext.Users;
     }
 }
