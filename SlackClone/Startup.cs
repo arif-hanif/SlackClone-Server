@@ -122,6 +122,12 @@ namespace SlackClone
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(o => o
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
+
+
             app.UseRouting();
             app.UseAuthentication();
 
