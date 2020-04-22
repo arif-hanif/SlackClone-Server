@@ -12,9 +12,7 @@ namespace SlackClone.Models
         public string Email { get; set; }
         [GraphQLNonNullType]
         public string DisplayName { get; set; }
-        [GraphQLNonNullType]
         public string FirstName { get; set; }
-        [GraphQLNonNullType]
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";
         [GraphQLIgnore]
