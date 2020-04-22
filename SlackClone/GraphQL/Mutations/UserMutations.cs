@@ -34,9 +34,7 @@ namespace SlackClone.GraphQL.Mutations
                     Email = input.Email,
                     PasswordHash = Convert.ToBase64String(hash),
                     Salt = salt,
-                    DisplayName = input.DisplayName,
-                    FirstName = input.FirstName,
-                    LastName = input.LastName
+                    DisplayName = input.DisplayName
                 };
 
                 dbContext.Users.Add(user);
