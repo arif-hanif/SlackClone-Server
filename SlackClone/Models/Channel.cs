@@ -11,12 +11,11 @@ namespace SlackClone.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int MemberCount { get => Members.Count; }
         public List<ChannelMember> Members { get; set; }
         public List<ChannelMessage> Messages { get; set; }
 
         [ForeignKey("User"), GraphQLIgnore]
         public string CreatedByEmail { get; set; }
-        public virtual User CreatedBy { get; }
+        public virtual User CreatedBy { get; set; }
     }
 }

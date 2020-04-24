@@ -27,6 +27,10 @@ namespace SlackClone.Models
                 .HasOne(se => se.Member)
                 .WithMany(s => s.Channels)
                 .HasForeignKey(se => se.MemberEmail);
+
+            modelBuilder.Entity<Channel>().HasData(
+                new Channel { Id = Guid.NewGuid(),  Name = "general", Description = "Ask about general items", CreatedAt = DateTime.Now, CreatedByEmail = "test@test.com" }
+                );
         }
     }
 }

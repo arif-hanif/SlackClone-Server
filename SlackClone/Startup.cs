@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using SlackClone.GraphQL.Mutations;
 using SlackClone.GraphQL.Queries;
+using SlackClone.GraphQL.Subscriptions;
 using SlackClone.Models;
 
 namespace SlackClone
@@ -81,7 +82,7 @@ namespace SlackClone
                 Username = userInfo[0],
                 Password = userInfo[1],
                 Database = databaseUri.LocalPath.TrimStart('/'),
-                SslMode = Npgsql.SslMode.Prefer,
+                SslMode = SslMode.Prefer,
                 TrustServerCertificate = true
             };
 
@@ -96,9 +97,14 @@ namespace SlackClone
                    .AddServices(sp)
                    .AddQueryType(d => d.Name("Query"))
                    .AddType<UserQueries>()
+                   .AddType<ChannelQueries>()
                    .AddMutationType(d => d.Name("Mutation"))
                    .AddType<UserMutations>()
-                   //.AddSubscriptionType(d => d.Name("Subscription"))
+                   .AddType<ChannelMutations>()
+                   .AddSubscriptionType(d => d.Name("Subscription"))
+                   .AddType<UserSubscriptions>()
+                   .AddType<MessageSubscriptions>()
+                   .AddAuthorizeDirectiveType()
                    .Create());
 
             services.AddQueryRequestInterceptor((context, builder, ct) =>
