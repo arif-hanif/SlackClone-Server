@@ -14,10 +14,10 @@ namespace SlackClone.Models
 
         [ForeignKey("Channel")]
         public Guid ChannelId { get; set; }
-        public virtual Channel Channel { get; }
+        public virtual Channel Channel { get; set; }
 
         [ForeignKey("User"), GraphQLIgnore]
         public string CreatedByEmail { get; set; }
-        public virtual User CreatedBy { get; }
+        public virtual User CreatedBy { get; set; }
     }
 }

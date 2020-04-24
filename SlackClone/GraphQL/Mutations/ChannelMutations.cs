@@ -53,16 +53,18 @@ namespace SlackClone.GraphQL.Mutations
             AddMessageToChannelInput input,
             [GlobalState]string currentUserEmail,
             [Service]SlackCloneDbContext dbContext,
-            [Service]ITopicEventSender eventSender,
+            //[Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
 
             var message = new ChannelMessage
             {
                 Id = Guid.NewGuid(),
+                ChannelId = input.ChannelId,
                 Text = input.Text,
                 CreatedAtUTC = DateTime.UtcNow,
-                CreatedByEmail = currentUserEmail
+                CreatedByEmail = currentUserEmail,
+                Likes = 0
             };
 
             dbContext.ChannelMessages.Add(message);
