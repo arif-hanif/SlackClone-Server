@@ -26,9 +26,9 @@ namespace SlackClone.GraphQL.Queries
         /// Gets all channel messages.
         /// </summary>
         [Authorize]
+        [UseSelection]
         [UseSorting]
         [UseFiltering]
-        [UseSelection]
         public IQueryable<ChannelMessage> ChannelMessages([Service] SlackCloneDbContext dbContext)
         {
             return dbContext.ChannelMessages;
