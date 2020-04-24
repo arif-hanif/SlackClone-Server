@@ -12,7 +12,7 @@ namespace SlackClone.Models
         public int Likes { get; set; }
         public Guid? ThreadId { get; set; }
 
-        [ForeignKey("Channel"), GraphQLIgnore]
+        [ForeignKey("Channel")]
         public Guid ChannelId { get; set; }
         public virtual Channel Channel { get; }
 

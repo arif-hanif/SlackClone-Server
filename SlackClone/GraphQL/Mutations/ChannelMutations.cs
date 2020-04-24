@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
@@ -60,7 +61,8 @@ namespace SlackClone.GraphQL.Mutations
             {
                 Id = Guid.NewGuid(),
                 Text = input.Text,
-                CreatedAtUTC = DateTime.UtcNow
+                CreatedAtUTC = DateTime.UtcNow,
+                CreatedByEmail = currentUserEmail
             };
 
             dbContext.ChannelMessages.Add(message);
