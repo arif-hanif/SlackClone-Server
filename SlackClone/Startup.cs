@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
+using HotChocolate.Subscriptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +19,7 @@ using SlackClone.GraphQL.Mutations;
 using SlackClone.GraphQL.Queries;
 using SlackClone.GraphQL.Subscriptions;
 using SlackClone.Models;
+using StackExchange.Redis;
 
 namespace SlackClone
 {
@@ -86,12 +88,26 @@ namespace SlackClone
                 TrustServerCertificate = true
             };
 
+            var redisConfigurationOptions = new ConfigurationOptions
+            {
+                AllowAdmin = false,
+                Ssl = false,
+                Password = "p909446d3e9c3405a7e4e38876320a36ca80fa98668e44e7a49cdbabf02ad514e",
+                EndPoints = {
+                    {  "ec2-3-86-75-248.compute-1.amazonaws.com", 20849 }
+                }
+            };
+
+            var conn = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+
             // Adds GraphQL Schema
             services
                 .AddEntityFrameworkNpgsql()
                 .AddDbContext<SlackCloneDbContext>((sp, opt) =>
                    opt.UseNpgsql(builder.ToString())
                    .UseInternalServiceProvider(sp))
+                //.AddInMemorySubscriptions()
+                .AddRedisSubscriptions(conn)
                 .AddGraphQL(sp =>
                    SchemaBuilder.New()
                    .AddServices(sp)
@@ -103,7 +119,7 @@ namespace SlackClone
                    .AddType<ChannelMutations>()
                    .AddSubscriptionType(d => d.Name("Subscription"))
                    .AddType<UserSubscriptions>()
-                   .AddType<MessageSubscriptions>()
+                   .AddType<ChannelSubscriptions>()
                    .AddAuthorizeDirectiveType()
                    .Create());
 

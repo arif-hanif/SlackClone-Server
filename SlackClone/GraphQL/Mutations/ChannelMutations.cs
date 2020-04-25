@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Execution;
-using HotChocolate.Language;
 using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +14,11 @@ namespace SlackClone.GraphQL.Mutations
     [ExtendObjectType(Name = "Mutation")]
     public class ChannelMutations
     {
-        //[Authorize]
+        [Authorize]
         public async Task<CreateMutationResponse<Channel>> CreateChannel(
             CreateChannelInput input,
             [Service]SlackCloneDbContext dbContext,
+            [Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
             try
@@ -41,6 +41,9 @@ namespace SlackClone.GraphQL.Mutations
                 dbContext.Channels.Add(channel);
                 await dbContext.SaveChangesAsync(cancellationToken);
                 bool ok = true;
+
+                await eventSender.SendAsync("channelCreated", channel, cancellationToken).ConfigureAwait(false);
+
                 return new CreateMutationResponse<Channel>(ok, channel);
             }
             catch (DbUpdateException e)
@@ -49,11 +52,12 @@ namespace SlackClone.GraphQL.Mutations
             }
         }
 
-        public async Task<string> AddMessageToChannel(
+        [Authorize]
+        public async Task<AddMessageToChannelResponse> AddMessageToChannel(
             AddMessageToChannelInput input,
             [GlobalState]string currentUserEmail,
             [Service]SlackCloneDbContext dbContext,
-            //[Service]ITopicEventSender eventSender,
+            [Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
 
@@ -70,7 +74,9 @@ namespace SlackClone.GraphQL.Mutations
             dbContext.ChannelMessages.Add(message);
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return "ok";
+            await eventSender.SendAsync(input.ChannelId, message, cancellationToken).ConfigureAwait(false);
+
+            return new AddMessageToChannelResponse(true);
         }
 
     }
