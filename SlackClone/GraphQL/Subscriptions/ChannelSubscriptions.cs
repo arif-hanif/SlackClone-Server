@@ -14,7 +14,6 @@ namespace SlackClone.GraphQL.Subscriptions
     {
         [SubscribeAndResolve]
         public async Task<IAsyncEnumerable<Channel>> OnCreateChannel(
-            Guid channelId,
             [Service]ITopicEventReceiver eventReceiver,
             CancellationToken cancellationToken)
         {
