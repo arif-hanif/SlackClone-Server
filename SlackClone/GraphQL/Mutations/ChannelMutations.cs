@@ -17,6 +17,7 @@ namespace SlackClone.GraphQL.Mutations
         [Authorize]
         public async Task<CreateMutationResponse<Channel>> CreateChannel(
             CreateChannelInput input,
+            [GlobalState]string currentUserEmail,
             [Service]SlackCloneDbContext dbContext,
             [Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
@@ -35,7 +36,9 @@ namespace SlackClone.GraphQL.Mutations
                 var channel = new Channel()
                 {
                     Name = input.Name,
-                    Description = input.Description
+                    Description = input.Description,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedByEmail = currentUserEmail
                 };
 
                 dbContext.Channels.Add(channel);
